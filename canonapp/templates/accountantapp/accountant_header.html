@@ -28,39 +28,41 @@
 
         <ul class="navbar-nav mr-auto">
          {% with url_name=request.resolver_match.url_name %}
-            
-            
+
+         <li class="nav-item {% if url_name == 'operations_add_driver' %}active{% endif %}">
+         <a class="nav-link" href="{% url 'operations_add_driver' %}">Add Member</a>
+         </li>
             <li class="nav-item {% if url_name == 'accountant_make_driver_payments' %}active{% endif %}">
             <a class="nav-link" href="{% url 'accountant_make_driver_payments' %}">Receive payments</a>
             </li>
-            
+
             <li class="nav-item {% if url_name == 'enter_expenditure' %}active{% endif %}">
             <a class="nav-link" href="{% url 'enter_expenditure'  %}">Pay Main Expenses</a>
             </li>
-            
+
             <li class="nav-item {% if url_name == 'enter_sundryexpense' %}active{% endif %}">
             <a class="nav-link" href="{% url 'enter_sundryexpense'  %}">Pay Petty Cash</a>
             </li>
-            
+
             <li class="nav-item {% if url_name == 'pay_salary' %}active{% endif %}">
             <a class="nav-link" href="{% url 'pay_salary'  %}">Pay Salary</a>
             </li>
-            
+
             <li class="nav-item {% if url_name == 'display_viewstaff' %}active{% endif %}">
             <a class="nav-link" href="{% url 'display_viewstaff'  %}">View Staff</a>
             </li>
-            
+
             <li class="nav-item {% if url_name == 'expenditurereport' %}active{% endif %}">
             <a class="nav-link" href="{% url 'expenditurereport'  %}">Monthly Reports</a>
             </li>
-            
+
             <li class="nav-item {% if url_name == 'accountant_driver_payment_archive' %}active{% endif %}">
             <a class="nav-link" href="{% url 'accountant_driver_payment_archive' %}">Archived Records</a>
             </li>
-            
+
       </ul>
-      
-      
+
+
         <ul class="navbar-nav ml-auto">
             <li class="nav-item active float-lg-right" >
                <a class="nav-link" href="{% url 'logout' %}">LOG OUT</a>
@@ -71,12 +73,12 @@
 
       <!--
      Form for searching
-     
+
      <form class="form-inline my-2 my-md-8">
         <input class="form-control " type="text">
       </form>-->
     </div>
-    
+
 
 
 </nav>

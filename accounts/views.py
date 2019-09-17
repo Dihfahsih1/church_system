@@ -127,12 +127,12 @@ def login_success(request):
 
     else:
         return HttpResponseRedirect('Account not found')
-        
-@login_required        
+
+@login_required
 def executive_driver_payment_archive(request):
     # when we search for monthly archived reports
     if request.method == 'POST':
-        report_year = request.POST['report_year'] 
+        report_year = request.POST['report_year']
         report_month=request.POST['report_month']
         archived_reports=Driver_payment_Reports_Archive.objects.filter(month=report_month, year=report_year)
         months=   ['January','February','March', 'April', 'May', 'June', 'July','August', 'August','September','October','November', 'November',
@@ -144,20 +144,20 @@ def executive_driver_payment_archive(request):
 
         #number of records got
         item_number = archived_reports.count()
-    
+
         # calculating the total balance
         total_bal = archived_reports.aggregate(total_bal=models.Sum("balance"))
         driver_total_balance = total_bal["total_bal"]
-    
+
         # calculating the total payments
         total_pai = archived_reports.aggregate(total_pai=models.Sum("amount_paid"))
         driver_total_paid = total_pai["total_pai"]
-    
+
         context={'archived_reports':archived_reports,'months':months,'years':years,'drivers':drivers,'driver_total_paid':driver_total_paid,'driver_total_balance':driver_total_balance,'item_number':item_number,
             'today':today,'report_year':report_year,'report_month':report_month
         }
         return render(request,"accounts/executive_driver_payment_archive.html",context)
-        
+
 
     months=   ['January','February','March', 'April', 'May', 'June', 'July','August', 'August','September','October','November', 'November',
                 'December']
@@ -181,23 +181,23 @@ class executive_driver_payment_archive_print(View):
 
         #number of records got
         item_number = archived_reports.count()
-    
+
         # calculating the total balance
         total_bal = archived_reports.aggregate(total_bal=models.Sum("balance"))
         driver_total_balance = total_bal["total_bal"]
-    
+
         # calculating the total payments
         total_pai = archived_reports.aggregate(total_pai=models.Sum("amount_paid"))
         driver_total_paid = total_pai["total_pai"]
-    
+
         context={'archived_reports':archived_reports,'drivers':drivers,'driver_total_paid':driver_total_paid,'driver_total_balance':driver_total_balance,'item_number':item_number,
             'today':today,'report_year':report_year,'report_month':report_month }
 
-        return Render.render('accounts/executive_driver_payment_archive_print.html', context) 
-        
-        
-        
-        
+        return Render.render('accounts/executive_driver_payment_archive_print.html', context)
+
+
+
+
 #################################################################
  #Staff Views
 ################################################################
@@ -214,7 +214,7 @@ def staff_create(request):
     else:
         form=StaffForm()
         return render(request, 'accounts/staff_create.html', {'form':form})
-    
+
 
     #################View Staff
 @login_required
@@ -222,7 +222,7 @@ def staff_view(request):
     items = Staff.objects.all()
     context = {'items': items, }
     return render(request, "accounts/view_staff.html", context)
-    
+
 
     ###########edit staff
 @login_required
@@ -238,8 +238,8 @@ def staff_update(request,pk):
     else:
         form=StaffForm(instance=item)
         return render(request, 'accounts/staff_update.html', {'form':form})
-    
-    
+
+
     ###############delete staff
 @login_required
 def staff_delete(request,pk):
@@ -247,7 +247,7 @@ def staff_delete(request,pk):
     items=Staff.objects.all()
     context={'items':items}
     return render(request, 'accounts/view_staff.html', context)
-    
+
 
 
 #################################################################
@@ -268,7 +268,7 @@ def register(request):
     else:
         form = RegistrationForm()
     return render(request, 'accounts/reg_form.html', {'form': form})
-    
+
 
     #################View users
 @login_required
@@ -276,7 +276,7 @@ def users_view(request):
     items = User.objects.all()
     context = {'items': items, }
     return render(request, "accounts/users_view.html", context)
-    
+
 
     ###########edit users
 @login_required
@@ -292,8 +292,8 @@ def users_edit(request,pk):
     else:
         form=RegistrationForm(instance=item)
         return render(request, 'accounts/users_edit.html', {'form':form})
-    
-    
+
+
     ###############delete users
 @login_required
 def users_delete(request,pk):
@@ -301,9 +301,9 @@ def users_delete(request,pk):
     items=User.objects.all()
     context={'items':items}
     return render(request, 'accounts/users_view.html', context)
-    
-    
-    
+
+
+
 ################################################################################
 
 #########################################
@@ -359,17 +359,17 @@ class accountant_generate_driver_financial_report(View):
         return Render.render('accounts/accountant_driver_financial_report.html', params)
 
 
-            
+
 
 ######################################
 # Searching for archived report
 #############################################
 @login_required
-    
+
 def accountant_driver_payment_archive(request):
     # when we search for monthly archived reports
     if request.method == 'POST':
-        report_year = request.POST['report_year'] 
+        report_year = request.POST['report_year']
         report_month=request.POST['report_month']
         archived_reports=Driver_payment_Reports_Archive.objects.filter(month=report_month, year=report_year)
         months=   ['January','February','March', 'April', 'May', 'June', 'July','August', 'August','September','October','November', 'November',
@@ -381,20 +381,20 @@ def accountant_driver_payment_archive(request):
 
         #number of records got
         item_number = archived_reports.count()
-    
+
         # calculating the total balance
         total_bal = archived_reports.aggregate(total_bal=models.Sum("balance"))
         driver_total_balance = total_bal["total_bal"]
-    
+
         # calculating the total payments
         total_pai = archived_reports.aggregate(total_pai=models.Sum("amount_paid"))
         driver_total_paid = total_pai["total_pai"]
-    
+
         context={'archived_reports':archived_reports,'months':months,'years':years,'drivers':drivers,'driver_total_paid':driver_total_paid,'driver_total_balance':driver_total_balance,'item_number':item_number,
             'today':today,'report_year':report_year,'report_month':report_month
         }
         return render(request,"accounts/accountant_driver_payment_archive.html",context)
-        
+
 
     months=   ['January','February','March', 'April', 'May', 'June', 'July','August', 'August','September','October','November', 'November',
                 'December']
@@ -522,22 +522,22 @@ class sundrypdf(View):
           'totalsundry': totalsundry,
       }
       return Render.render('accounts/sundrypdf.html', sundrycontext)
-      
-      
-      
-      
+
+
+
+
 
  ##################################
  # This produces the general financial report for all drivers
- ##################################       
+ ##################################
 
 def driver_general_financial_report(request):
-    
+
     #when some one submits the financial report
     if request.method == 'POST':
         archived_year = request.POST['archived_year']
         archived_month=request.POST['archived_month']
-            
+
             #getting all the driver_payments
         all_payment_reports=Driver_Payment_Report.objects.all()
         for payment_report in all_payment_reports:
@@ -546,10 +546,10 @@ def driver_general_financial_report(request):
             balance=payment_report.balance
             amount_paid=payment_report.amount_paid
             date=payment_report.date
-    
+
             #getting the archives object to creation
             payment_report_archive_object=Driver_payment_Reports_Archive()
-    
+
             payment_report_archive_object.driver_name=driver_name
             payment_report_archive_object.amount_paid=amount_paid
             payment_report_archive_object.driver_car=driver_car
@@ -563,12 +563,12 @@ def driver_general_financial_report(request):
             Driver.objects.filter(driver_name=driver_name).update(
                 driver_monthly_payment=F('driver_monthly_payment_ref')+balance
             )
-    
+
             payment_report_archive_object.save()
-    
+
         #This deletes all the current report data after creation of a monthly archive.
         all_payment_reports.delete()
-    
+
         #retrieving all the payment receipts
         driver_receipts=DriverPayment.objects.all()
         for receipt in driver_receipts:
@@ -577,7 +577,7 @@ def driver_general_financial_report(request):
             paid_amount=receipt.paid_amount
             paid_by=receipt.paid_by
             received_by=receipt.received_by
-    
+
             #get the receipt archive object
             payment_receipt_archive=DriverPayments_Archive()
             payment_receipt_archive.date=date
@@ -587,21 +587,21 @@ def driver_general_financial_report(request):
             payment_receipt_archive.received_by=received_by
             payment_receipt_archive.month=archived_month
             payment_receipt_archive.year=archived_year
-            
+
             payment_receipt_archive.save()
         #this deletes all the previous driver receipts
         driver_receipts.delete()
-        
+
         message="You have successfully archived the payment report and all payment receipts for "+archived_month+" "+archived_year
         all_drivers = Driver.objects.all()
         #loop through all drivers available
         for driver in all_drivers:
-    
+
             driver_name=driver.driver_name
             driver_id=driver.id
             driver_car=driver.attached_car
             driver_balance=driver.driver_monthly_payment
-    
+
             # calculating total paid so far
             total = DriverPayment.objects.filter(driver_name=driver_id).aggregate(total_amount_paid=models.Sum("paid_amount"))
             total_paid = total["total_amount_paid"]
@@ -610,29 +610,29 @@ def driver_general_financial_report(request):
             report_item.amount_paid=total_paid
             report_item.balance=driver_balance
             report_item.driver_car=driver_car
-    
+
             # first check for availability of an object(filtering)
             if Driver_Payment_Report.objects.filter(driver_name=driver_name):
                 Driver_Payment_Report.objects.filter(driver_name=driver_name).update(amount_paid=total_paid,balance=driver_balance)
-    
+
             else:
              report_item.save()
-    
+
         items=Driver_Payment_Report.objects.all()
         item_number=items.count()
-    
+
         #calculating the total balance
         total_bal = Driver_Payment_Report.objects.aggregate(total_bal=models.Sum("balance"))
         driver_total_balance = total_bal["total_bal"]
-    
+
         #calculating the total payments
         total_pai = Driver_Payment_Report.objects.aggregate(total_pai=models.Sum("amount_paid"))
         driver_total_paid = total_pai["total_pai"]
-        
+
         months=   ['January','February','March', 'April', 'May', 'June', 'July','August', 'August','September','October','November', 'November',
                     'December']
         years = [2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035]
-        
+
         context={'message':message,
         'months':months,
         'years':years,
@@ -641,11 +641,11 @@ def driver_general_financial_report(request):
         'items':items,
         'item_number':item_number
         }
-    
+
         return  render(request, "accounts/driver_general_financial_report.html",context)
-    
+
     #the if for post data  of archiving ends here
-    
+
     all_drivers = Driver.objects.all()
     #loop through all drivers available
     for driver in all_drivers:
@@ -659,11 +659,11 @@ def driver_general_financial_report(request):
         # calculating total paid so far
         total = DriverPayment.objects.filter(driver_name=driver_id).aggregate(total_amount_paid=models.Sum("paid_amount"))
         total_paid = total["total_amount_paid"]
-        
+
         #Driver.objects.filter()
-        
-        
-        
+
+
+
         #report item variables
         report_item=Driver_Payment_Report()
         report_item.driver_name=driver_name
@@ -688,7 +688,7 @@ def driver_general_financial_report(request):
     #calculating the total payments
     total_pai = Driver_Payment_Report.objects.aggregate(total_pai=models.Sum("amount_paid"))
     driver_total_paid = total_pai["total_pai"]
-    
+
     months=   ['January','February','March', 'April', 'May', 'June', 'July','August', 'August','September','October','November', 'November',
                 'December']
     years = [2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035]
@@ -733,8 +733,8 @@ class print_general_financial_report(View):
         'today': today,
         }
         return Render.render('accounts/print_general_financial_report.html', params)
-        
-        
+
+
         ###############################################################################################
         # searching for the archives
 def executive_expensesarchivessearch(request):
@@ -842,7 +842,7 @@ def executive_sundryarchivessearch(request):
                'years': years,
                'sundry': sundry}
     return render(request, "accounts/sundryarchive.html", context)
-    
+
 
    ####################################################
     #        GENERATING REPORTS IN FORM OF ANNUAL PDFS #
@@ -937,5 +937,32 @@ def executive_sundryarchive(request):
                }
     return render(request, 'accounts/sundryarchive.html', context)
 
+#accountant adding church member.
 
-        
+def operations_add_driver(request):
+    if request.method=="POST":
+        form=DriverForm(request.POST,request.FILES)
+        if form.is_valid():
+
+            car = get_object_or_404(Car, car_registration_no=form.cleaned_data['attached_car'].car_registration_no)
+
+            if car.availability=='TAKEN':
+                info='The selected car has already been assigned to a driver'
+                form = DriverForm()
+                return render(request,'accountantapp/accountant_add_member.html',{'info':info,'form':form})
+
+            else:
+
+                # updating the car status
+                Car.objects.filter(car_registration_no=form.cleaned_data['attached_car'].car_registration_no) \
+                    .update(availability='TAKEN')
+
+                form.save()
+
+                info='The driver successfully registered'
+                items = Driver.objects.all()
+
+                return render(request,'operationsapp/operations_view_drivers.html',{'info':info,'items': items})
+    else:
+        form=DriverForm()
+        return render(request, 'operationsapp/operations_add_driver.html', {'form':form})
