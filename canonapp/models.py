@@ -108,11 +108,11 @@ class Driver_checklist(models.Model):
     date=models.DateField(default=now())
     driver_name=models.ForeignKey(Driver,on_delete=models.PROTECT)
     checklist_file=models.FileField(upload_to = 'checklists', default = True)
-    
-    def __str__(self):
-        return self.checklist_file 
 
-    
+    def __str__(self):
+        return self.checklist_file
+
+
 
 
 
@@ -205,9 +205,15 @@ class SalaryReportArchive(models.Model):
     def __str__(self):
         return 'Name: {1}  Amount:{0}'.format(self.Staff, self.Amount)
 
-
-
-
-
-
-
+#Accountant add church Member
+class ChurchMember(models.Model):
+    statuses = (('Married','Married'),('Single','Single'))
+    gendars = (('Male','Male'),('Female','Female'))
+    Name=models.CharField(max_length=100)
+    Address=models.CharField(max_length=100)
+    Occupation=models.CharField(max_length=100)
+    Status = models.CharField( max_length=12,choices=statuses)
+    Genda = models.CharField( max_length=12,choices=gendars)
+    Contact = models.CharField(max_length=20)
+    def __str__(self):
+        return 'Name: {1}'.format(self.Name)

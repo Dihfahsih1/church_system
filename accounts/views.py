@@ -939,7 +939,7 @@ def executive_sundryarchive(request):
 
 #accountant adding church member.
 
-def operations_add_driver(request):
+def accountant_add_member(request):
     if request.method=="POST":
         form=DriverForm(request.POST,request.FILES)
         if form.is_valid():
