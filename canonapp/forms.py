@@ -103,9 +103,6 @@ class SalaryForm(forms.ModelForm):
 
 #accountant add church Member
 class AddChurchMemberForm(forms.ModelForm):
-
     class Meta:
-
         model=ChurchMember
-
         fields = ('Name','Address','Occupation','Status','Genda','Contact')
