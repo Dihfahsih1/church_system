@@ -14,7 +14,7 @@ SECRET_KEY = 'dfi)!n=vat#4_8*#5t=8pfa-)jo*#gmn^b16&v)o@%pq*8&&&c'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [""]
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # Application definition
