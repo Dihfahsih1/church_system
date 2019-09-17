@@ -18,7 +18,4 @@ admin.site.register(Sundry)
 admin.site.register(SalaryReportArchive)
 admin.site.register(SundryReportArchive)
 admin.site.register(ExpensesReportArchive)
-
-
-
-
+admin.site.register(ChurchMember)

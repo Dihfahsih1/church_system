@@ -60,7 +60,7 @@ class DriverPaymentForm(forms.ModelForm):
 class DriverCheckListForm(forms.ModelForm):
     class Meta:
         model=Driver_checklist
-        
+
         fields=('date','driver_name','checklist_file')
 
 
@@ -101,5 +101,11 @@ class SalaryForm(forms.ModelForm):
 
         fields = ('Date','Staff','Salary_Type','Month','Amount','AmountInWords')
 
+#accountant add church Member
+class AddChurchMemberForm(forms.ModelForm):
 
+    class Meta:
 
+        model=ChurchMember
+
+        fields = ('Name','Address','Occupation','Status','Genda','Contact')

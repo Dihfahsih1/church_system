@@ -15,7 +15,7 @@ from django.http import HttpResponse
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-
+from django import forms
 from accounts.models import Staff
 
 from django.contrib.auth.decorators import login_required
@@ -941,28 +941,10 @@ def executive_sundryarchive(request):
 
 def accountant_add_member(request):
     if request.method=="POST":
-        form=DriverForm(request.POST,request.FILES)
+        form=AddChurchMemberForm(request.POST, request.FILES)
         if form.is_valid():
-
-            car = get_object_or_404(Car, car_registration_no=form.cleaned_data['attached_car'].car_registration_no)
-
-            if car.availability=='TAKEN':
-                info='The selected car has already been assigned to a driver'
-                form = DriverForm()
-                return render(request,'accountantapp/accountant_add_member.html',{'info':info,'form':form})
-
-            else:
-
-                # updating the car status
-                Car.objects.filter(car_registration_no=form.cleaned_data['attached_car'].car_registration_no) \
-                    .update(availability='TAKEN')
-
-                form.save()
-
-                info='The driver successfully registered'
-                items = Driver.objects.all()
-
-                return render(request,'operationsapp/operations_view_drivers.html',{'info':info,'items': items})
+            form.save()
+            return redirect('accountant_add_member')
     else:
-        form=DriverForm()
-        return render(request, 'operationsapp/operations_add_driver.html', {'form':form})
+        form = AddChurchMemberForm()
+        return render(request,'accountantapp/accountant_add_member.html',{'form':form})
