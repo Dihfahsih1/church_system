@@ -2160,4 +2160,4 @@ def pay_commission(request):
             return redirect('pay_commission')
     else:
         form = CommissionForm()
-        return render(request, 'accountantapp/accountant_enter_small_expenses.html',{'form': form})
+        return render(request, 'accountantapp/accountant_pay_commission.html',{'form': form})
