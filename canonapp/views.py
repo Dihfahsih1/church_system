@@ -2128,3 +2128,15 @@ def Enter_Pledges(request):
     else:
         form=PledgesForm()
         return render(request, 'accountantapp/accountant_enter_pledges.html',{'form':form})
+#accountant recording main expenses
+def accountant_enter_main_expenses(request):
+    if request.method=="POST":
+        form=MainExpensesForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('accountant_enter_main_expenses')
+    else:
+        form=MainExpensesForm()
+        items = MainExpenses.objects.all()
+        context = {'items': items, 'form': form, }
+        return render(request, 'accountantapp/accountant_enter_main_expenses.html',context)

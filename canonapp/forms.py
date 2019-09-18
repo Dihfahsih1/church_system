@@ -117,3 +117,7 @@ class PledgesForm(forms.ModelForm):
     class Meta:
         model=Pledges
         fields = ('Date','Day_Of_The_Week','Pledge_Made_By','Contact_Number','Reason','Amount','Amount_In_Words')
+class MainExpensesForm(forms.ModelForm):
+    class Meta:
+        model=MainExpenses
+        fields=('Date','Payment_Made_To','Reason_For_Payment','Amount','Amount_In_Words')
