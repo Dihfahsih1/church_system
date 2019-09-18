@@ -249,3 +249,11 @@ class SmallExpenses(Model):
     Amount_In_Words = models.CharField(max_length=500, blank=False)
     def __str__(self):
         return self.Payment_Made_To
+
+class Commission(models.Model):
+    Date = models.DateField(default=now())
+    Name = models.CharField(max_length=100, blank=False)
+    Amount = models.IntegerField(default=0)
+    Amount_In_Words = models.CharField(max_length=500, blank=False)
+    def __str__(self):
+        return self.Name

@@ -2150,3 +2150,14 @@ def accountant_enter_small_expenses(request):
     else:
         form = SmallExpensesForm()
         return render(request, 'accountantapp/accountant_enter_small_expenses.html',{'form': form})
+
+#accountant issuing out commission
+def pay_commission(request):
+    if request.method == "POST":
+        form = CommissionForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('pay_commission')
+    else:
+        form = CommissionForm()
+        return render(request, 'accountantapp/accountant_enter_small_expenses.html',{'form': form})

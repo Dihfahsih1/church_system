@@ -126,3 +126,8 @@ class SmallExpensesForm(forms.ModelForm):
     class Meta:
         model=SmallExpenses
         fields=('Date','Payment_Made_To','Amount','Amount_In_Words','Reason_For_Payment')
+
+class CommissionForm(forms.ModelForm):
+    class Meta:
+        model=Commission
+        fields=('Date','Name','Amount','Amount_In_Words')
