@@ -241,3 +241,11 @@ class MainExpenses(models.Model):
     def __str__(self):
         def __str__(self):
             return 'Name: {1}  Amount:{0}'.format(self.Payment_Made_To, self.Amount)
+class SmallExpenses(Model):
+    Date = models.DateField(default=now())
+    Payment_Made_To = models.CharField(max_length=100, blank=False)
+    Reason_For_Payment = models.CharField(max_length=250)
+    Amount = models.IntegerField(default=0)
+    Amount_In_Words = models.CharField(max_length=500, blank=False)
+    def __str__(self):
+        return self.Payment_Made_To

@@ -2107,7 +2107,7 @@ class sundryarchivepdf(View):
            #######################################################################
 #<======= #                     UCC BWAISE SYSTEM                                 #========>
            #######################################################################
-#accountant adding church member.
+ #ACCOUNTANT ENTERING RECORDS INTO THE DATABASE
 def accountant_add_member(request):
     if request.method=="POST":
         form=AddChurchMemberForm(request.POST, request.FILES)
@@ -2140,3 +2140,13 @@ def accountant_enter_main_expenses(request):
         items = MainExpenses.objects.all()
         context = {'items': items, 'form': form, }
         return render(request, 'accountantapp/accountant_enter_main_expenses.html',context)
+#accountant recording small expenses that are not catered for in the main expenses
+def accountant_enter_small_expenses(request):
+    if request.method == "POST":
+        form = SmallExpensesForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('accountant_enter_small_expenses')
+    else:
+        form = SmallExpensesForm()
+        return render(request, 'accountantapp/accountant_enter_small_expenses.html',{'form': form})

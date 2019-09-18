@@ -152,6 +152,9 @@ urlpatterns = [
     url(r'^accountant_add_member/',accountant_add_member, name='accountant_add_member'),
     url(r'^Enter_Pledges/',Enter_Pledges, name='Enter_Pledges'),
     url(r'^accountant_enter_main_expenses/',accountant_enter_main_expenses, name='accountant_enter_main_expenses'),
+    url(r'^accountant_enter_small_expenses/',accountant_enter_small_expenses, name='accountant_enter_small_expenses'),
+    url(r'^pay_commission/',pay_commission, name='pay_commission'),
+
 
 
     ]

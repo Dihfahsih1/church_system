@@ -121,3 +121,8 @@ class MainExpensesForm(forms.ModelForm):
     class Meta:
         model=MainExpenses
         fields=('Date','Payment_Made_To','Reason_For_Payment','Amount','Amount_In_Words')
+
+class SmallExpensesForm(forms.ModelForm):
+    class Meta:
+        model=SmallExpenses
+        fields=('Date','Payment_Made_To','Amount','Amount_In_Words','Reason_For_Payment')
