@@ -101,7 +101,7 @@ def receptionist_add_complaint(request):
     else:
         form=ComplaintsForm()
         return render(request, 'receptionistapp/receptionist_add_complaint.html', {'form':form})
-        
+
 ############################################
 # operations add driver
 #########################################
@@ -188,7 +188,7 @@ def receptionist_edit_complaint(request,pk):
 #######################################################
 def operations_edit_driver(request,pk):
     item=get_object_or_404(Driver,pk=pk)
-    
+
     #updating all related instances
     driver_name=item.driver_name
 
@@ -202,8 +202,8 @@ def operations_edit_driver(request,pk):
     else:
         form=DriverForm(instance=item)
         return render(request, 'operationsapp/operations_edit_driver.html', {'form':form})
-    
-    
+
+
 ##############################################
 # operations delete car
 #################################################
@@ -212,8 +212,8 @@ def operations_delete_car(request,pk):
     items=Car.objects.all()
     context={'items':items}
     return render(request, 'operationsapp/operations_view_cars.html', context)
-    
-    
+
+
 #############################################
 # receptionist delete complaint
 #######################################################
@@ -222,8 +222,8 @@ def receptionist_delete_complaint(request,pk):
     items=Complaints.objects.all()
     context={'items':items}
     return render(request, 'receptionistapp/receptionist_view_complaints.html', context)
-    
-    
+
+
 ##################################################
 # operations delete driver
 ########################################################
@@ -234,20 +234,20 @@ def operations_delete_driver(request,pk):
     #Driver_Payment_Report.objects.filter(driver_name=driver.driver_name).delete()
     #DriverPayments_Archive.objects.filter(driver_name=driver.id).delete()
     #Driver_payment_Reports_Archive.objects.filter(driver_name=driver.driver_name).delete()
-    
-    #get associated car to the driver 
+
+    #get associated car to the driver
     car_id=Driver.objects.filter(id=pk).attached_car
-    
+
     #update the car to availability
     Car.objects.filter(id=car_id).update(availability='AVAILABLE')
-    
+
     #delete driver object
     driver.delete()
     items=Driver.objects.all()
     context={'items':items}
     return render(request, 'operationsapp/operations_view_drivers.html', context)
-    
-    
+
+
 ################################################
 # receptionist forward complaint
 ###################################################
@@ -301,7 +301,7 @@ def operations_export_drivers(request):
 
 
 def operations_view_driver_payments(request):
-    
+
         # when sending SMS to a driver
     if request.method == 'POST':
         message = request.POST['sms_message']
@@ -310,32 +310,32 @@ def operations_view_driver_payments(request):
 
         # Your Account Sid and Auth Token from twilio.com/console
         custome_message="CANON INNOVATIONS LTD,\n"+"Dear "+driv_name+",\n"+message
-        
+
         message_number=contact.lstrip("0")
-        
-        
+
+
         #SENDING MESSAGES
-        
+
         post_data={'user':'canon','password':'mediat*45TYZ','sender':'CANON','message':custome_message,'reciever':'256'+message_number}
-        
+
         post_response=requests.post(url='http://boxuganda.com/api.php',data=post_data)
-        
+
         sms_balance=requests.get(url='http://boxuganda.com/balance.php?user=canon&password=mediat*45TYZ')
-        
+
         message2="You have successfully sent a message to "+driv_name+","+"  Your SMS balance is:"+sms_balance.text+"SMS's"
-        
-        
-        
+
+
+
         #getting all the driver info back
         all_drivers = Driver.objects.all()
         # loop through all drivers available
         for driver in all_drivers:
-    
+
             driver_name = driver.driver_name
             driver_id = driver.id
             driver_car = driver.attached_car
             driver_balance = driver.driver_monthly_payment
-    
+
             # calculating total paid so far
             total = DriverPayment.objects.filter(driver_name=driver_id).aggregate(
                 total_amount_paid=models.Sum("paid_amount"))
@@ -345,26 +345,26 @@ def operations_view_driver_payments(request):
             report_item.amount_paid = total_paid
             report_item.balance = driver_balance
             report_item.driver_car = driver_car
-    
+
             # first check for availability of an object(filtering)
             if Driver_Payment_Report.objects.filter(driver_name=driver_name):
                 Driver_Payment_Report.objects.filter(driver_name=driver_name).update(amount_paid=total_paid,
                                                                                      balance=driver_balance)
-    
+
             else:
                 report_item.save()
-    
+
         items = Driver_Payment_Report.objects.all()
         item_number = items.count()
-    
+
         # calculating the total balance
         total_bal = Driver_Payment_Report.objects.aggregate(total_bal=models.Sum("balance"))
         driver_total_balance = total_bal["total_bal"]
-    
+
         # calculating the total payments
         total_pai = Driver_Payment_Report.objects.aggregate(total_pai=models.Sum("amount_paid"))
         driver_total_paid = total_pai["total_pai"]
-       
+
         context={'message':message2,
         'driver_total_balance': driver_total_balance,
         'driver_total_paid': driver_total_paid,
@@ -422,43 +422,43 @@ def operations_view_driver_payments(request):
         'item_number': item_number
     }
     return render(request, "operationsapp/operations_view_driver_payments.html", context)
-    
-##############################################    
+
+##############################################
 # Receptionist view driver payments
 ##########################################
 def receptionist_view_driver_payments(request):
-    
+
      # when sending SMS to a driver
     if request.method == 'POST':
         message = request.POST['sms_message']
         driv_name=request.POST['driver_name']
         contact=get_object_or_404(Driver,driver_name=driv_name).driver_contact
-        
+
         # Your Account Sid and Auth Token from twilio.com/console
         custome_message="CANON INNOVATIONS LTD,\n"+"Dear "+driv_name+",\n"+message
-        
+
         message_number=contact.lstrip("0")
-        
-        
+
+
         #SENDING MESSAGES
-        
+
         post_data={'user':'canon','password':'mediat*45TYZ','sender':'CANON','message':custome_message,'reciever':'256'+message_number}
-        
+
         post_response=requests.post(url='http://boxuganda.com/api.php',data=post_data)
-        
+
         sms_balance=requests.get(url='http://boxuganda.com/balance.php?user=canon&password=mediat*45TYZ')
-        
+
         message2="You have successfully sent a message to "+driv_name+","+"  Your SMS balance is:"+sms_balance.text+"SMS's"
-        
+
         all_drivers = Driver.objects.all()
         # loop through all drivers available
         for driver in all_drivers:
-    
+
             driver_name = driver.driver_name
             driver_id = driver.id
             driver_car = driver.attached_car
             driver_balance = driver.driver_monthly_payment
-    
+
             # calculating total paid so far
             total = DriverPayment.objects.filter(driver_name=driver_id).aggregate(
                 total_amount_paid=models.Sum("paid_amount"))
@@ -468,26 +468,26 @@ def receptionist_view_driver_payments(request):
             report_item.amount_paid = total_paid
             report_item.balance = driver_balance
             report_item.driver_car = driver_car
-    
+
             # first check for availability of an object(filtering)
             if Driver_Payment_Report.objects.filter(driver_name=driver_name):
                 Driver_Payment_Report.objects.filter(driver_name=driver_name).update(amount_paid=total_paid,
                                                                                      balance=driver_balance)
-    
+
             else:
                 report_item.save()
-    
+
         items = Driver_Payment_Report.objects.all()
         item_number = items.count()
-    
+
         # calculating the total balance
         total_bal = Driver_Payment_Report.objects.aggregate(total_bal=models.Sum("balance"))
         driver_total_balance = total_bal["total_bal"]
-    
+
         # calculating the total payments
         total_pai = Driver_Payment_Report.objects.aggregate(total_pai=models.Sum("amount_paid"))
         driver_total_paid = total_pai["total_pai"]
-        
+
         context = {'message':message2,
         'driver_total_balance': driver_total_balance,
         'driver_total_paid': driver_total_paid,
@@ -495,7 +495,7 @@ def receptionist_view_driver_payments(request):
         'item_number': item_number
         }
         return render(request, "receptionistapp/receptionist_view_driver_payments.html", context)
-    
+
     all_drivers = Driver.objects.all()
     # loop through all drivers available
     for driver in all_drivers:
@@ -546,12 +546,12 @@ def receptionist_view_driver_payments(request):
 
 #########################################################
 # operations view driver checklist
-#########################################################   
+#########################################################
 def operations_view_driver_checklist(request):
     items=Driver_checklist.objects.all()
     return render(request,'operationsapp/operations_view_driver_checklist.html',{'items':items})
-    
-    
+
+
 ###########################################################
 # operations add driver checklist
 ################################################################
@@ -565,23 +565,23 @@ def operations_add_driver_checklist(request):
             return render(request,'operationsapp/operations_view_driver_checklist.html',{'info':info,'items': items})
     else:
         form=DriverCheckListForm()
-        return render(request, 'operationsapp/operations_add_driver_checklist.html', {'form':form})  
-    
+        return render(request, 'operationsapp/operations_add_driver_checklist.html', {'form':form})
+
     form=DriverCheckListForm()
     return render(request,'operationsapp/operations_add_driver_checklist.html',{'form':form})
-    
+
 ###################################################################
 # operations edit driver checklist
 ###############################################################
 def operations_edit_driver_checklist(request,pk):
     item=get_object_or_404(Driver_checklist,pk=pk)
-    
+
     if request.method=="POST":
         form=DriverCheckListForm(request.POST,request.FILES,instance=item)
         if form.is_valid():
             form.save()
             return redirect('operations_view_driver_checklist')
-    
+
     else:
         form=DriverCheckListForm(instance=item)
     return render(request, 'operationsapp/operations_edit_driver_checklist.html', {'form':form})
@@ -598,7 +598,7 @@ def operations_delete_driver_checklist(request,pk):
 
 
 
-    
+
 
 ###################################################
 # accountant home
@@ -622,25 +622,25 @@ def accountant_view_driver_payments(request):
 #######################################
 
 def accountant_make_driver_payments(request):
-    
+
     if request.method=="POST" and 'receipt_search_form' in request.POST:
         driver_name = request.POST['driver_name']
         driver_id=get_object_or_404(Driver,driver_name=driver_name).id
-        
+
         all_payment_receipts=DriverPayment.objects.filter(driver_name=driver_id)
-        
+
         receipt_number=all_payment_receipts.count()
-        
+
         #the payment form
         form=DriverPaymentForm()
-        
+
         #getting all the drivers
         drivers=Driver.objects.all()
-        
+
         context={'receipt_number':receipt_number,'driver_name':driver_name,'receipt_number':receipt_number,'all_payment_receipts':all_payment_receipts,'form':form,'drivers':drivers}
         return render(request, 'accountantapp/accountant_make_driver_payments.html',context)
 
-    
+
     if request.method=="POST" and 'payment_form' in request.POST:
         form=DriverPaymentForm(request.POST)
         if form.is_valid():
@@ -654,13 +654,13 @@ def accountant_make_driver_payments(request):
     else:
         #the payment form
         form=DriverPaymentForm()
-        
+
         #getting all the drivers
         drivers=Driver.objects.all()
 
         # looking for all available payments
         #items = DriverPayment.objects.all()
-        
+
         try:
             items=DriverPayment.objects.latest('id')
         except DriverPayment.DoesNotExist:
@@ -674,37 +674,37 @@ def accountant_make_driver_payments(request):
 # accountant delete driver payment
 ###################################################################
 def accountant_delete_driver_payment(request, pk):
-    
+
     payment_object=get_object_or_404(DriverPayment, pk=pk)
-    
+
     driver_id=payment_object.driver_name.id
-    
+
     amount_paid=payment_object.paid_amount
-    
+
         #updating the driver balance
     Driver.objects.filter(pk=driver_id).update(driver_monthly_payment=F('driver_monthly_payment')+amount_paid)
-    
-    
+
+
     #delete payment object
     DriverPayment.objects.filter(id=pk).delete()
         #the payment form
     form=DriverPaymentForm()
-    
+
     #getting all the drivers
     drivers=Driver.objects.all()
-    
+
     #message
     message="you have delete a payment"
 
     # looking for all available payments
     #items = DriverPayment.objects.all()
-    
+
     try:
         items=DriverPayment.objects.latest('id')
     except DriverPayment.DoesNotExist:
         items = None
     context = {'items': items,'form':form,'drivers':drivers,'message':message}
-    
+
 
     return render (request, 'accountantapp/accountant_make_driver_payments.html',context)
 
@@ -773,7 +773,7 @@ class accountant_generate_driver_financial_report(View):
         return Render.render('accountantapp/accountant_driver_financial_report.html', params)
 
 
-            
+
 
 #########################################
 # display_driver_financial statement
@@ -867,9 +867,9 @@ def operations_display_driver_financial_statement(request, driver_name):
         'today': today,
     }
     return render(request,'operationsapp/operations_display_driver_financial_statement.html', params)
-    
-    
-    
+
+
+
 #########################################
 # receptionist display driver financial statement
 ##############################################
@@ -920,15 +920,15 @@ def receptionist_display_driver_financial_statement(request, driver_name):
 
  ##################################
  # This produces the general financial report for all drivers
- ##################################       
+ ##################################
 
 def driver_general_financial_report(request):
-    
+
     #when some one submits the financial report
     if request.method == 'POST':
         archived_year = request.POST['archived_year']
         archived_month=request.POST['archived_month']
-            
+
             #getting all the driver_payments
         all_payment_reports=Driver_Payment_Report.objects.all()
         for payment_report in all_payment_reports:
@@ -937,10 +937,10 @@ def driver_general_financial_report(request):
             balance=payment_report.balance
             amount_paid=payment_report.amount_paid
             date=payment_report.date
-    
+
             #getting the archives object to creation
             payment_report_archive_object=Driver_payment_Reports_Archive()
-    
+
             payment_report_archive_object.driver_name=driver_name
             payment_report_archive_object.amount_paid=amount_paid
             payment_report_archive_object.driver_car=driver_car
@@ -954,12 +954,12 @@ def driver_general_financial_report(request):
             Driver.objects.filter(driver_name=driver_name).update(
                 driver_monthly_payment=F('driver_monthly_payment_ref')+balance
             )
-    
+
             payment_report_archive_object.save()
-    
+
         #This deletes all the current report data after creation of a monthly archive.
         all_payment_reports.delete()
-    
+
         #retrieving all the payment receipts
         driver_receipts=DriverPayment.objects.all()
         for receipt in driver_receipts:
@@ -968,7 +968,7 @@ def driver_general_financial_report(request):
             paid_amount=receipt.paid_amount
             paid_by=receipt.paid_by
             received_by=receipt.received_by
-    
+
             #get the receipt archive object
             payment_receipt_archive=DriverPayments_Archive()
             payment_receipt_archive.date=date
@@ -978,21 +978,21 @@ def driver_general_financial_report(request):
             payment_receipt_archive.received_by=received_by
             payment_receipt_archive.month=archived_month
             payment_receipt_archive.year=archived_year
-            
+
             payment_receipt_archive.save()
         #this deletes all the previous driver receipts
         driver_receipts.delete()
-        
+
         message="You have successfully archived the payment report and all payment receipts for "+archived_month+" "+archived_year
         all_drivers = Driver.objects.all()
         #loop through all drivers available
         for driver in all_drivers:
-    
+
             driver_name=driver.driver_name
             driver_id=driver.id
             driver_car=driver.attached_car
             driver_balance=driver.driver_monthly_payment
-    
+
             # calculating total paid so far
             total = DriverPayment.objects.filter(driver_name=driver_id).aggregate(total_amount_paid=models.Sum("paid_amount"))
             total_paid = total["total_amount_paid"]
@@ -1001,29 +1001,29 @@ def driver_general_financial_report(request):
             report_item.amount_paid=total_paid
             report_item.balance=driver_balance
             report_item.driver_car=driver_car
-    
+
             # first check for availability of an object(filtering)
             if Driver_Payment_Report.objects.filter(driver_name=driver_name):
                 Driver_Payment_Report.objects.filter(driver_name=driver_name).update(amount_paid=total_paid,balance=driver_balance)
-    
+
             else:
              report_item.save()
-    
+
         items=Driver_Payment_Report.objects.all()
         item_number=items.count()
-    
+
         #calculating the total balance
         total_bal = Driver_Payment_Report.objects.aggregate(total_bal=models.Sum("balance"))
         driver_total_balance = total_bal["total_bal"]
-    
+
         #calculating the total payments
         total_pai = Driver_Payment_Report.objects.aggregate(total_pai=models.Sum("amount_paid"))
         driver_total_paid = total_pai["total_pai"]
-        
+
         months=   ['January','February','March', 'April', 'May', 'June', 'July','August', 'August','September','October','November', 'November',
                     'December']
         years = [2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035]
-        
+
         context={'message':message,
         'months':months,
         'years':years,
@@ -1032,11 +1032,11 @@ def driver_general_financial_report(request):
         'items':items,
         'item_number':item_number
         }
-    
+
         return  render(request, "accountantapp/driver_general_financial_report.html",context)
-    
+
     #the if for post data  of archiving ends here
-    
+
     all_drivers = Driver.objects.all()
     #loop through all drivers available
     for driver in all_drivers:
@@ -1050,11 +1050,11 @@ def driver_general_financial_report(request):
         # calculating total paid so far
         total = DriverPayment.objects.filter(driver_name=driver_id).aggregate(total_amount_paid=models.Sum("paid_amount"))
         total_paid = total["total_amount_paid"]
-        
+
         #Driver.objects.filter()
-        
-        
-        
+
+
+
         #report item variables
         report_item=Driver_Payment_Report()
         report_item.driver_name=driver_name
@@ -1079,7 +1079,7 @@ def driver_general_financial_report(request):
     #calculating the total payments
     total_pai = Driver_Payment_Report.objects.aggregate(total_pai=models.Sum("amount_paid"))
     driver_total_paid = total_pai["total_pai"]
-    
+
     months=   ['January','February','March', 'April', 'May', 'June', 'July','August', 'August','September','October','November', 'November',
                 'December']
     years = [2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035]
@@ -1124,10 +1124,10 @@ class print_general_financial_report(View):
         'today': today,
         }
         return Render.render('accountantapp/print_general_financial_report.html', params)
-        
-        
-        
-        
+
+
+
+
 #####################################################
 # operations handle complaint
 #####################################################
@@ -1153,7 +1153,7 @@ def operations_view_car_details(request,pk):
     context={'specific_car':specific_car,}
 
     return render(request, "operationsapp/operations_view_car_details.html",context)
-    
+
 def receptionist_view_car_details(request,pk):
     #driver
     driver=get_object_or_404(Driver,pk=pk)
@@ -1163,10 +1163,10 @@ def receptionist_view_car_details(request,pk):
 
     context={'specific_car':specific_car,}
 
-    return render(request, "receptionistapp/receptionist_view_car_details.html",context)    
-    
-    
-    
+    return render(request, "receptionistapp/receptionist_view_car_details.html",context)
+
+
+
 
 ######################################################
 # operations generate driver financial statement
@@ -1251,39 +1251,39 @@ def accountant_edit_driver_receipts(request,pk):
 # operations view driver details
 ##############################################################
 def operations_view_driver_details(request,pk):
-    
+
     specific_driver=get_object_or_404(Driver,pk=pk)
-    
+
     context={
         'specific_driver':specific_driver
     }
-    
-    
+
+
     return render(request,'operationsapp/operations_view_driver_details.html',context)
 
 ###########################################################
 # receptionist view driver details
 ###########################################################
 def receptionist_view_driver_details(request,pk):
-    
+
     specific_driver=get_object_or_404(Driver,pk=pk)
-    
+
     context={
         'specific_driver':specific_driver
     }
-    
-    
+
+
     return render(request,'receptionistapp/receptionist_view_driver_details.html',context)
-  
-    
+
+
 ######################################
 # Searching for archived report
 #############################################
-    
+
 def accountant_driver_payment_archive(request):
     # when we search for monthly archived reports
     if request.method == 'POST':
-        report_year = request.POST['report_year'] 
+        report_year = request.POST['report_year']
         report_month=request.POST['report_month']
         archived_reports=Driver_payment_Reports_Archive.objects.filter(month=report_month, year=report_year)
         months=   ['January','February','March', 'April', 'May', 'June', 'July','August', 'August','September','October','November', 'November',
@@ -1295,20 +1295,20 @@ def accountant_driver_payment_archive(request):
 
         #number of records got
         item_number = archived_reports.count()
-    
+
         # calculating the total balance
         total_bal = archived_reports.aggregate(total_bal=models.Sum("balance"))
         driver_total_balance = total_bal["total_bal"]
-    
+
         # calculating the total payments
         total_pai = archived_reports.aggregate(total_pai=models.Sum("amount_paid"))
         driver_total_paid = total_pai["total_pai"]
-    
+
         context={'archived_reports':archived_reports,'months':months,'years':years,'drivers':drivers,'driver_total_paid':driver_total_paid,'driver_total_balance':driver_total_balance,'item_number':item_number,
             'today':today,'report_year':report_year,'report_month':report_month
         }
         return render(request,"accountantapp/accountant_driver_payment_archive.html",context)
-        
+
 
     months=   ['January','February','March', 'April', 'May', 'June', 'July','August', 'August','September','October','November', 'November',
                 'December']
@@ -1324,8 +1324,8 @@ def accountant_driver_payment_archive(request):
 ########################################################
 # printing archived monthly reports
 ########################################################
-    
-class accountant_driver_payment_archive_print(View): 
+
+class accountant_driver_payment_archive_print(View):
    def get(self, request, report_month,report_year):
         archived_reports=Driver_payment_Reports_Archive.objects.filter(month=report_month, year=report_year)
         drivers=Driver.objects.all()
@@ -1334,21 +1334,21 @@ class accountant_driver_payment_archive_print(View):
 
         #number of records got
         item_number = archived_reports.count()
-    
+
         # calculating the total balance
         total_bal = archived_reports.aggregate(total_bal=models.Sum("balance"))
         driver_total_balance = total_bal["total_bal"]
-    
+
         # calculating the total payments
         total_pai = archived_reports.aggregate(total_pai=models.Sum("amount_paid"))
         driver_total_paid = total_pai["total_pai"]
-    
+
         context={'archived_reports':archived_reports,'drivers':drivers,'driver_total_paid':driver_total_paid,'driver_total_balance':driver_total_balance,'item_number':item_number,
             'today':today,'report_year':report_year,'report_month':report_month }
 
-        return Render.render('accountantapp/accountant_driver_payment_archive_print.html', context) 
-    
-    
+        return Render.render('accountantapp/accountant_driver_payment_archive_print.html', context)
+
+
 
 ##########################################
 # Searching for the payment receipts
@@ -1357,40 +1357,40 @@ class accountant_driver_payment_archive_print(View):
 def accountant_driver_payment_archived_receipt(request):
            # when we search for monthly archived receipts for customers
     if request.method == 'POST':
-        receipt_year = request.POST['receipt_year'] 
+        receipt_year = request.POST['receipt_year']
         receipt_month=request.POST['receipt_month']
         receipt_driver=request.POST['receipt_driver']
-        
+
         driver_id=get_object_or_404(Driver, driver_name=receipt_driver).id
-    
+
         archived_receipts=DriverPayments_Archive.objects.filter(month=receipt_month, year=receipt_year,driver_name=driver_id)
-        
+
         # calculating the total payments
         total_pai = archived_receipts.aggregate(total_pai=models.Sum("paid_amount"))
         driver_total_paid = total_pai["total_pai"]
-        
+
         #getting number of payments
         payments=archived_receipts.count()
-        
+
         #getting the cycle balance
         payment_ref=get_object_or_404(Driver, driver_name=receipt_driver).driver_monthly_payment_ref
-        
+
        # cycle_balance=payment_ref-driver_total_paid
         if driver_total_paid==None:
             cycle_balance=payment_ref
-        
+
         else:
             cycle_balance=payment_ref-driver_total_paid
-        
-        
-        
+
+
+
         months=   ['January','February','March', 'April', 'May', 'June', 'July','August', 'August','September','October','November', 'November',
                 'December']
         years = [2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035]
         drivers=Driver.objects.all()
         context={'payment_ref':payment_ref,'cycle_balance':cycle_balance,'payments':payments,'archived_receipts':archived_receipts,'months':months,'years':years,'drivers':drivers,'driver_total_paid':driver_total_paid,'receipt_year':receipt_year,'receipt_month':receipt_month,'receipt_driver':receipt_driver}
         return render(request,"accountantapp/accountant_driver_payment_archived_receipt.html",context)
-            
+
     months=   ['January','February','March', 'April', 'May', 'June', 'July','August', 'August','September','October','November', 'November', 'December']
     years = [2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035]
     drivers=Driver.objects.all()
@@ -1405,25 +1405,25 @@ class print_archived_driver_statement(View):
     def get(self,request,receipt_month,receipt_year,receipt_driver):
         #getting the driver id
         driver_id=get_object_or_404(Driver, driver_name=receipt_driver).id
-        
+
         #getting all the archived receipts
         archived_receipts=DriverPayments_Archive.objects.filter(month=receipt_month, year=receipt_year,driver_name=driver_id)
 
         # calculating the total payments
         total_pai = archived_receipts.aggregate(total_pai=models.Sum("paid_amount"))
         driver_total_paid = total_pai["total_pai"]
-        
+
         #getting number of payments
         payments=archived_receipts.count()
-        
+
         #getting the current time zone
         today = timezone.now()
-        
+
         #getting the cycle balance
         payment_ref=get_object_or_404(Driver, driver_name=receipt_driver).driver_monthly_payment_ref
-        
+
         cycle_balance=payment_ref-driver_total_paid
-        
+
         context={
             'payment_ref':payment_ref,
             'cycle_balance':cycle_balance,
@@ -1435,11 +1435,11 @@ class print_archived_driver_statement(View):
             'receipt_year':receipt_year,
             'receipt_driver':receipt_driver
         }
-        
-        
+
+
         return Render.render('accountantapp/print_archived_driver_statement.html',context)
 
-    
+
 
 ################################
 
@@ -1455,7 +1455,7 @@ def accountant_profile(request):
     ####################################################
     #        ENTERING RECORDS INTO THE DATABASE        #
     ####################################################
-    
+
 
 def add_staff(request):
     if request.method == "POST":
@@ -1469,7 +1469,7 @@ def add_staff(request):
 
 def display_viewstaff(request):
     all_staff =Staff.objects.all()
-    return render(request,'accountantapp/display_staff.html',{'all_staff': all_staff})            
+    return render(request,'accountantapp/display_staff.html',{'all_staff': all_staff})
 
  # payment of salaries
 def pay_salary(request):
@@ -1508,7 +1508,7 @@ def enter_sundryexpense(request):
         form=SundryForm()
         return render(request, 'accountantapp/add_new.html',{'form':form})
 
-#############################################################        
+#############################################################
 # EDITTING THE FIELDS THE ENTRIES THAT HAVE BEEN RECORDED   #
 #############################################################
 def edit_payment(request, pk):
@@ -1543,27 +1543,27 @@ def edit_sundry(request, pk):
     else:
         form = SundryForm(instance=item)
     return render(request, 'accountantapp/add_new.html', {'form': form, })
-    
+
 def delete_sundry(request, pk):
     Sundry.objects.filter(id-pk).delete()
     items.Sundry.objects.all()
     context = {'items': items}
     return render (request, 'sundryindex.html', context)
-    
-    
+
+
 def delete_salary(request,pk):
     items= Spend.objects.filter(id=pk).delete()
     items.Salary.objects.all()
     context = { 'items':items}
     return render(request, 'accountantapp/salaryindex.html', context)
-    
+
 def delete_payment(request,pk):
     Spend.objects.filter(id=pk).delete()
     items=Spend.objects.all()
-    
+
     context = { 'items':items}
     return render(request, 'accountantapp/expenditureindex.html', context)
-    
+
         ####################################################
         #                VIEWING  THE REPORTS              #
         ####################################################
@@ -1687,10 +1687,10 @@ class sundrypdf(View):
           'totalsundry': totalsundry,
         }
         return Render.render('accountantapp/sundrypdf.html', sundrycontext)
-#printing staff details        
-class accountant_print_staff(View):     
+#printing staff details
+class accountant_print_staff(View):
     def get(self, request):
-        print_staff=Staff.objects.all() 
+        print_staff=Staff.objects.all()
         today = timezone.now()
         context={
           'print_staff':print_staff,'today':today
@@ -1774,7 +1774,7 @@ def sundryarchive(request):
 
 
 
- 
+
 
   ############################################################
    # SUBMISSION OF MONTHLY REPORTS TO BE ARCHIVED              #
@@ -2046,7 +2046,7 @@ def sundryarchivessearch(request):
                'years': years,
                'sundry': sundry}
     return render(request, "accountantapp/sundryarchive.html", context)
-    
+
 
    ####################################################
     #        GENERATING REPORTS IN FORM OF ANNUAL PDFS #
@@ -2103,40 +2103,14 @@ class sundryarchivepdf(View):
         }
         return Render.render('accountantapp/sundryarchivepdf.html', sundrycontext)
 
+#accountant adding church member.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+def accountant_add_member(request):
+    if request.method=="POST":
+        form=AddChurchMemberForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('accountant_add_member')
+    else:
+        form = AddChurchMemberForm()
+        return render(request,'accountantapp/accountant_add_member.html',{'form':form})

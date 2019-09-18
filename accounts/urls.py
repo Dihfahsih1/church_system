@@ -84,5 +84,5 @@ urlpatterns = [
     url(r'^executive_salaryarchivessearch/', executive_salaryarchivessearch, name='executive_salaryarchivessearch'),
     url(r'^executive_sundrysarchivessearch/',executive_sundryarchivessearch, name='executive_sundryarchivessearch'),
 
-    url(r'^accountant_add_member/',accountant_add_member, name='accountant_add_member'),
+    
 ]

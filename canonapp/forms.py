@@ -14,6 +14,11 @@ class CarForm(forms.ModelForm):
         fields=('car_name','car_model','car_engine_no','car_registration_no',
 
               'car_consumption_rate','car_image')
+#accountant add church Member
+class AddChurchMemberForm(forms.ModelForm):
+    class Meta:
+        model=ChurchMember
+        fields = ('Name','Address','Occupation','Status','Genda','Contact')
 
 
 
@@ -100,7 +105,6 @@ class SalaryForm(forms.ModelForm):
         model=Salary
 
         fields = ('Date','Staff','Salary_Type','Month','Amount','AmountInWords')
-
 #accountant add church Member
 class AddChurchMemberForm(forms.ModelForm):
     class Meta:

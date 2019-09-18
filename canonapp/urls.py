@@ -34,7 +34,7 @@ urlpatterns = [
     url(r'^operations_edit_car/(?P<pk>\d+)$', operations_edit_car, name="operations_edit_car"),
     url(r'^operations_edit_driver/(?P<pk>\d+)$', operations_edit_driver, name="operations_edit_driver"),
     url(r'^receptionist_edit_complaint/(?P<pk>\d+)$', receptionist_edit_complaint, name="receptionist_edit_complaint"),
-    
+
     url(r'^operations_delete_car/(?P<pk>\d+)$', operations_delete_car, name="operations_delete_car"),
     url(r'^receptionist_delete_complaint/(?P<pk>\d+)$', receptionist_delete_complaint, name="receptionist_delete_complaint"),
     url(r'^operations_delete_driver/(?P<pk>\d+)$', operations_delete_driver, name="operations_delete_driver"),
@@ -90,7 +90,7 @@ urlpatterns = [
     url(r'^print_archived_driver_statement/(?P<receipt_month>.+?)/(?P<receipt_year>.+?)/(?P<receipt_driver>.+?)/$', print_archived_driver_statement.as_view(), name="print_archived_driver_statement"),
 
     url(r'^operations_view_driver_checklist$', operations_view_driver_checklist, name="operations_view_driver_checklist"),
-    
+
     url(r'^operations_add_driver_checklist$',operations_add_driver_checklist,name="operations_add_driver_checklist"),
     url(r'^operations_edit_driver_checklist/(?P<pk>\d+)$',operations_edit_driver_checklist,name="operations_edit_driver_checklist"),
     url(r'^operations_delete_driver_checklist/(?P<pk>\d+)$',operations_delete_driver_checklist,name="operations_delete_driver_checklist"),
@@ -103,7 +103,7 @@ urlpatterns = [
     url(r'^display_viewstaff/', display_viewstaff, name='display_viewstaff'),
     url(r'^add_staff/', add_staff, name='add_staff'),
     url(r'^pay_salary/',pay_salary, name='pay_salary'),
-    
+
     #ACCOUNTANT ENTERING RECORDS INTO THE FINANCIAL DATABASE
     url(r'^enter_expenditure/', enter_expenditure, name='enter_expenditure'),
     url(r'^enter_sundryexpense', enter_sundryexpense ,name='enter_sundryexpense'),
@@ -127,8 +127,8 @@ urlpatterns = [
     url(r'^salariespdf/', salariespdf.as_view() ,name='salariespdf'),
     url(r'^sundrypdf/', sundrypdf.as_view() ,name='sundrypdf'),
     url(r'^expenditurepdf/', expenditurepdf.as_view() ,name='expenditurepdf'),
-    
-    #PRINTING RECEIPTS FOR EACH TRANSACTION MADE 
+
+    #PRINTING RECEIPTS FOR EACH TRANSACTION MADE
     url(r'^expensereceipt/(?P<pk>\d+)', expensereceipt.as_view() ,name='expensereceipt'),
     url(r'^salaryreceipt/(?P<pk>\d+)', salaryreceipt.as_view() ,name='salaryreceipt'),
     url(r'^sundryreceipt/(?P<pk>\d+)', sundryreceipt.as_view() ,name='sundryreceipt'),
@@ -137,16 +137,17 @@ urlpatterns = [
     url(r'^expenditurearchive/', expenditurearchive, name='expenditurearchive'),
     url(r'^salaryarchive/', salaryarchive, name='salaryarchive'),
     url(r'^sundryarchive/', sundryarchive, name='sundryarchive'),
- 
+
     #PRINTING GENERAL MONTHLY ARCHIVED REPORTS
     url(r'^expenditurearchivepdf/(?P<report_month>.+?)/(?P<report_year>.+?)/',expenditurearchivepdf.as_view(), name='expenditurearchivepdf'),
     url(r'^salaryarchivepdf/(?P<report_month>.+?)/(?P<report_year>.+?)/',salaryarchivepdf.as_view(), name='salaryarchivepdf'),
     url(r'^sundryarchivepdf/(?P<report_month>.+?)/(?P<report_year>.+?)/',sundryarchivepdf.as_view(), name='sundryarchivepdf'),
-    
+
     #SEARCHING FOR THE ARCHIVED DATA
     url(r'^expensesarchivessearch/', expensesarchivessearch, name='expensesarchivessearch'),
     url(r'^salaryarchivessearch/', salaryarchivessearch, name='salaryarchivessearch'),
     url(r'^sundrysarchivessearch/',sundryarchivessearch, name='sundryarchivessearch'),
-    
-    
+    url(r'^accountant_add_member/',accountant_add_member, name='accountant_add_member'),
+
+
     ]

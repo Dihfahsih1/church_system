@@ -936,15 +936,3 @@ def executive_sundryarchive(request):
         'sundryarchived': sundryarchived
                }
     return render(request, 'accounts/sundryarchive.html', context)
-
-#accountant adding church member.
-
-def accountant_add_member(request):
-    if request.method=="POST":
-        form=AddChurchMemberForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('accountant_add_member')
-    else:
-        form = AddChurchMemberForm()
-        return render(request,'accountantapp/accountant_add_member.html',{'form':form})

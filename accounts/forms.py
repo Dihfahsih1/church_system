@@ -12,7 +12,7 @@ class StaffForm(forms.ModelForm):
 
         fields=(
             'first_name','last_name','dob','gender', 'address','phone', 'role', 'duties', 'salary'
-              
+
             )
 
 
