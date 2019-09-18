@@ -216,4 +216,15 @@ class ChurchMember(models.Model):
     Genda = models.CharField( max_length=12,choices=gendars)
     Contact = models.CharField(max_length=20)
     def __str__(self):
-        return 'Name: {1}'.format(self.Name)
+        return self.Name
+
+class Pledges(Model):
+    Date = models.DateField(default=now())
+    Day_Of_The_Week = models.CharField(max_length=100, blank=False)
+    Pledge_Made_By = models.ForeignKey(ChurchMember,on_delete=models.PROTECT, blank=False )
+    Reason = models.CharField(max_length=100, null=True)
+    Contact_Number = models.CharField(max_length=100, null=True)
+    Amount = models.IntegerField(default=0)
+    Amount_In_Words = models.CharField(max_length=500, blank=False)
+    def __str__(self):
+        return self.Pledge_Made_By

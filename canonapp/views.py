@@ -2103,8 +2103,11 @@ class sundryarchivepdf(View):
         }
         return Render.render('accountantapp/sundryarchivepdf.html', sundrycontext)
 
-#accountant adding church member.
 
+           #######################################################################
+#<======= #                     UCC BWAISE SYSTEM                                 #========>
+           #######################################################################
+#accountant adding church member.
 def accountant_add_member(request):
     if request.method=="POST":
         form=AddChurchMemberForm(request.POST, request.FILES)
@@ -2114,3 +2117,14 @@ def accountant_add_member(request):
     else:
         form = AddChurchMemberForm()
         return render(request,'accountantapp/accountant_add_member.html',{'form':form})
+
+#Recording pledges details
+def Enter_Pledges(request):
+    if request.method=="POST":
+        form=PledgesForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('Enter_Pledges')
+    else:
+        form=PledgesForm()
+        return render(request, 'accountantapp/accountant_enter_pledges.html',{'form':form})

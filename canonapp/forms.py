@@ -105,8 +105,15 @@ class SalaryForm(forms.ModelForm):
         model=Salary
 
         fields = ('Date','Staff','Salary_Type','Month','Amount','AmountInWords')
+         ################################################################
+        # UCC BWAISE WEB SYSTEM FORM FIELDS                              #
+         ################################################################
 #accountant add church Member
 class AddChurchMemberForm(forms.ModelForm):
     class Meta:
         model=ChurchMember
         fields = ('Name','Address','Occupation','Status','Genda','Contact')
+class PledgesForm(forms.ModelForm):
+    class Meta:
+        model=Pledges
+        fields = ('Date','Day_Of_The_Week','Pledge_Made_By','Contact_Number','Reason','Amount','Amount_In_Words')

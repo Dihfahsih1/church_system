@@ -147,7 +147,10 @@ urlpatterns = [
     url(r'^expensesarchivessearch/', expensesarchivessearch, name='expensesarchivessearch'),
     url(r'^salaryarchivessearch/', salaryarchivessearch, name='salaryarchivessearch'),
     url(r'^sundrysarchivessearch/',sundryarchivessearch, name='sundryarchivessearch'),
+
+    #UCC BWAISE WEB SYSTEM ACCOUNTANT URLS#
     url(r'^accountant_add_member/',accountant_add_member, name='accountant_add_member'),
+    url(r'^Enter_Pledges/',Enter_Pledges, name='Enter_Pledges'),
 
 
     ]
